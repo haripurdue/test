@@ -1,0 +1,36 @@
+sudo apt-get install python-nltk
+sudo apt-get install python-matplotlib
+sudo apt-get install python-setuptools python-dev build-essential
+sudo easy_install pip
+sudo pip install feedparser
+
+import nltk
+import re
+import matplotlib
+import urllib
+import feedparser
+
+from nltk import FreqDist
+from urllib import urlopen
+
+url = "http://www.youtube.com"
+html = urlopen(url).read()
+
+raw = nltk.clean_html(html)
+raw = raw.replace("\n","")
+raw = raw.replace("\t","")
+raw = re.sub(r'[^\x00-\x7f]',r'',raw)
+
+tokens = nltk.word_tokenize(raw)
+
+fdist1 = FreqDist(tokens)
+fdist1.plot(50,cumulative = True)
+
+
+
+
+
+url = "http://www.reddit.com/python/.rss"
+d = feedparser.parse(url)
+for post in d.entries:
+    print post.title
